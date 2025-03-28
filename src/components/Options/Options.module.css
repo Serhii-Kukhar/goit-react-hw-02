@@ -1,13 +1,13 @@
-.buttonBox{
-margin: 10px 0;
+.buttonBox {
+  margin: 10px 0;
 }
 .button {
   border-radius: 8px;
-  padding: 16px 32px;
+  padding: 12px 26px;
   font-weight: 300;
   font-family: inherit;
   color: white;
-  background-color: #1a1a1a;
+  background-color: #323232;
   cursor: pointer;
   transition: all 0.3s ease;
   margin: 5px 10px;
@@ -37,11 +37,10 @@ margin: 10px 0;
   background-color: rgb(211, 32, 32);
 }
 
-.reset{
-  padding: 8px 20px;
+.reset {
+  padding: 10px 20px;
   font-weight: 300;
   margin: 5px;
-  
 }
 .reset:hover {
   border-color: rgba(66, 220, 255, 0.5);
@@ -52,5 +51,5 @@ margin: 10px 0;
 }
 
 .button:active {
-  font-size: 1.1em;
+  transform: translateY(3px);
 }
