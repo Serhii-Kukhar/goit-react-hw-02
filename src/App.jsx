@@ -10,12 +10,22 @@ const App = () => {
     const savedValues = localStorage.getItem("values");
     return savedValues ? JSON.parse(savedValues) : { good: 0, neutral: 0, bad: 0 };
   });
-
   useEffect(() => {
     localStorage.setItem("values", JSON.stringify(values));
   }, [values]);
 
 
+
+// 
+  const [lastClicked, setLastClicked] = useState("");
+  
+  useEffect(() => {
+    if (lastClicked) {
+      const timer = setTimeout(() => setLastClicked(""), 300); 
+      return () => clearTimeout(timer);
+    }
+  }, [lastClicked]);
+// 
 
   const updateFeedback = (feedbackType) => {
     setValues((prevValues) => {
@@ -23,10 +33,12 @@ const App = () => {
       localStorage.setItem("values", JSON.stringify(newValues));
       return newValues;
     });
+    setLastClicked(feedbackType);
   };
 
   const resetFeedback = () => {
     setValues({ good: 0, neutral: 0, bad: 0 });
+    setLastClicked("");
   };
 
   const totalFeedback = values.good + values.neutral + values.bad;
@@ -37,7 +49,7 @@ const App = () => {
     <>
       <Description />
       <Options updateFeedback={updateFeedback} resetFeedback={resetFeedback} totalFeedback={totalFeedback} />
-      {totalFeedback > 0 ? <Feedback feedback={values} totalFeedback={totalFeedback} positiveFeedback={positiveFeedback} /> : <Notification />}
+      {totalFeedback > 0 ? <Feedback feedback={values} totalFeedback={totalFeedback} positiveFeedback={positiveFeedback} lastClicked={lastClicked} /> : <Notification />}
     </>
   );
 };

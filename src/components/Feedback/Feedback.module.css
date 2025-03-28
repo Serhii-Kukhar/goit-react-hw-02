@@ -1,0 +1,8 @@
+.feedbackItem {
+  transition: all 0.3s ease-in-out;
+}
+
+.highlight {
+  color: rgb(0, 208, 255);
+  font-size: 1.1em;
+}
