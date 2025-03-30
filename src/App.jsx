@@ -8,48 +8,46 @@ import Notification from "./components/Notification/Notification";
 const App = () => {
   const [values, setValues] = useState(() => {
     const savedValues = localStorage.getItem("values");
-    return savedValues ? JSON.parse(savedValues) : { good: 0, neutral: 0, bad: 0 };
+    return savedValues
+      ? JSON.parse(savedValues)
+      : { good: 0, neutral: 0, bad: 0 };
   });
   useEffect(() => {
     localStorage.setItem("values", JSON.stringify(values));
   }, [values]);
 
-
-
-// 
-  const [lastClicked, setLastClicked] = useState("");
-  
-  useEffect(() => {
-    if (lastClicked) {
-      const timer = setTimeout(() => setLastClicked(""), 300); 
-      return () => clearTimeout(timer);
-    }
-  }, [lastClicked]);
-// 
-
   const updateFeedback = (feedbackType) => {
-    setValues((prevValues) => {
-      const newValues = { ...prevValues, [feedbackType]: prevValues[feedbackType] + 1 };
-      localStorage.setItem("values", JSON.stringify(newValues));
-      return newValues;
-    });
-    setLastClicked(feedbackType);
+    setValues((prevValues) => ({
+      ...prevValues,
+      [feedbackType]: prevValues[feedbackType] + 1,
+    }));
   };
 
   const resetFeedback = () => {
     setValues({ good: 0, neutral: 0, bad: 0 });
-    setLastClicked("");
   };
 
   const totalFeedback = values.good + values.neutral + values.bad;
-  const positiveFeedback = Math.round((values.good / totalFeedback) * 100);
-
+  const positiveFeedback =
+    totalFeedback > 0 ? Math.round((values.good / totalFeedback) * 100) : 0;
 
   return (
     <>
       <Description />
-      <Options updateFeedback={updateFeedback} resetFeedback={resetFeedback} totalFeedback={totalFeedback} />
-      {totalFeedback > 0 ? <Feedback feedback={values} totalFeedback={totalFeedback} positiveFeedback={positiveFeedback} lastClicked={lastClicked} /> : <Notification />}
+      <Options
+        updateFeedback={updateFeedback}
+        resetFeedback={resetFeedback}
+        totalFeedback={totalFeedback}
+      />
+      {totalFeedback > 0 ? (
+        <Feedback
+          feedback={values}
+          totalFeedback={totalFeedback}
+          positiveFeedback={positiveFeedback}
+        />
+      ) : (
+        <Notification />
+      )}
     </>
   );
 };
